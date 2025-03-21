@@ -10,7 +10,7 @@ public class InMemoryRepository implements URLRepository {
 
     @Override
     public void save(URLMapping urlMapping) {
-
+        storage.put(urlMapping.getShortKey(), urlMapping);
     }
 
     @Override
@@ -26,5 +26,10 @@ public class InMemoryRepository implements URLRepository {
     @Override
     public void deleteExpiredUrls() {
         storage.entrySet().removeIf(entry -> entry.getValue().getLastAccessedAt().isBefore(LocalDateTime.now().minusDays(30)));
+    }
+
+    @Override
+    public List<URLMapping> getAllUrls() {
+        return new ArrayList<>(storage.values());
     }
 }
